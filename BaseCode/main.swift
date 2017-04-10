@@ -58,34 +58,29 @@ func unUn(_ inp: String) -> Int // Points to Unicode table from integer input
     var out = 0
     for element in inp.unicodeScalars {
         out += Int(element.value) - 55
+        print(out)
     }
     return out
 } // end of function
 
 func fromBasetoBase(_ basei: Int,_ basef: Int,_ inp: String) -> String // Universal from base to base function
 {
-    var num = 0
-    for h in 0...inp.array.count - 1
+    var t = 0
+    var m = Double(inp.array.count - 1)
+    for i in inp.array
     {
-        num += unUn(inp.array[h]) * Int(pow(10,Double(inp.array.count - 1 - h)))
-    }
-    var j = 0
-    var m = Double(num.array.count) - 1.0
-    for i in num.array
-    {
-        j += i * Int(pow(Double(basei), m))
+        t += unUn(i) * Int(pow(Double(basei), m))
         m -= 1
     }
-    var con = uni(j % basef)
-    j = (j / basef)
-    while j != 0
+    var out = ""
+    while t != 0
     {
-        con = uni(j % basef) + con
-        j = j / basef
+        out = String(uni(t % basef)) + out
+        t = t / basef
     }
-    return con
+    return out
 } // End of function
-
+print(fromBasetoBase(10,2,"400"))
 while true{ // Repeated selector code
     menu()
     switch readLine()!{
