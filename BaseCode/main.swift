@@ -119,7 +119,7 @@ while true{ // Repeated selector code
         let num4 = readLine()!
         let bases = sub(base)
         let sum10 = String(Int(fromBasetoBase(base, 10, num1))! + Int(fromBasetoBase(base, 10, num2))! + Int(fromBasetoBase(base, 10, num3))! + Int(fromBasetoBase(base, 10, num4))!) // sum in base 10
-        let state = "\(num1 + bases) + \(num2 + bases) + \(num3 + bases) +\(num4 + bases)" // part of print statement
+        let state = "\(num1 + bases) + \(num2 + bases) + \(num3 + bases) + \(num4 + bases)" // part of print statement
         print(state + " = \(fromBasetoBase(10, base, sum10) + bases) = \(sum10 + sub(10))")
     case "6": // Universal base changer
         print("Enter original base: ")
