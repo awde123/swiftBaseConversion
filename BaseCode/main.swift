@@ -8,20 +8,19 @@
 
 import Foundation
 
-extension Int {
+extension Int { // Allows integers to be expressed as arrays
     var array: [Int] {
         return description.characters.flatMap{Int(String($0))}
     }
-}
+} // end of extension
 
-extension String {
+extension String { // Allows strings to be expressed as arrays
     var array: [String] {
         return description.characters.flatMap{String($0)}
     }
-}
+} // end of extension
 
-// Prints menu options
-func menu()
+func menu() // Prints menu options
 {
     print("Operation      Option")
     print("To base from 10   1")
@@ -29,12 +28,12 @@ func menu()
     print("To hex from bin   3")
     print("To bin from hex   4")
     print("Base addition     5")
+    print("From base to base 6")
     print("Quit              0")
-    print("")
-}
+    print("###################")
+} // end of function
 
-// Creates subscript integers as String
-func sub(_ input: Int) -> String
+func sub(_ input: Int) -> String // Creates subscript integers as String
 {
     var out = ""
     for i in input.array
@@ -42,38 +41,34 @@ func sub(_ input: Int) -> String
         out += String(describing: UnicodeScalar(UInt32(("208" + String(i)), radix: 16)!)!)
     }
     return out
-}
+} // end of function
 
-// Converts integer to unicode
-func uni(_ input: Int) -> String
+func uni(_ input: Int) -> String // Converts integer to unicode
 {
     if input > 9
     {
         return String(describing: UnicodeScalar(input + 55)!)
     }
     else {return String(input)}
-}
+} // end of function
 
-// Converts unicode to integer
-func unUn(_ inp: String) -> Int
+func unUn(_ inp: String) -> Int // Points to Unicode table from integer input
 {
-    if Int(inp) != nil {return Int(inp)!}
+    if Int(inp) != nil {return Int(inp)!} // determines if unicode table need be referenced
     var out = 0
     for element in inp.unicodeScalars {
         out += Int(element.value) - 55
     }
     return out
-}
+} // end of function
 
-// Converts a number from given base to given base
-func fromBasetoBase(_ basei: Int,_ basef: Int,_ inp: String) -> String
+func fromBasetoBase(_ basei: Int,_ basef: Int,_ inp: String) -> String // Universal from base to base function
 {
     var num = 0
     for h in 0...inp.array.count - 1
     {
         num += unUn(inp.array[h]) * Int(pow(10,Double(inp.array.count - 1 - h)))
     }
-    
     var j = 0
     var m = Double(num.array.count) - 1.0
     for i in num.array
@@ -81,41 +76,66 @@ func fromBasetoBase(_ basei: Int,_ basef: Int,_ inp: String) -> String
         j += i * Int(pow(Double(basei), m))
         m -= 1
     }
-    var con = uni(num % basef)
+    var con = uni(j % basef)
     j = (j / basef)
     while j != 0
     {
         con = uni(j % basef) + con
         j = j / basef
     }
-    return con + sub(basef)
-}
+    return con
+} // End of function
 
-print(fromBasetoBase(11, 10, "167"))
-
-/*
-// Repeated selector code
-while true{
+while true{ // Repeated selector code
     menu()
     switch readLine()!{
-    case "0":
+    case "0": // Quit
         exit(0)
-    case "1":
-        break
-    case "2":
-        break
-    case "3":
-        break
-    case "4":
-        break
-    case "5":
-        break
-    case "6":
-        let basei = Int(readLine()!)!
+    case "1": // To Base from 10
+        print("Enter number: ")
+        let num = readLine()!
+        print("Enter base: ")
+        let base = Int(readLine()!)!
+        print(String(num) + sub(10) + " = " + fromBasetoBase(10, base, num) + sub(base))
+    case "2": // To 10 from Base
+        print("Enter number: ")
+        let num = readLine()!
+        print("Enter base: ")
+        let base = Int(readLine()!)!
+        print(String(num) + sub(base) + " = " + fromBasetoBase(base, 10, num) + sub(10))
+    case "3": // To hex from binary
+        print("Enter binary: ")
+        let num = readLine()!
+        print(String(num) + sub(2) + " = " + fromBasetoBase(2, 16, num) + sub(16))
+    case "4": // To binary from hex
+        print("Enter hex: ")
+        let num = readLine()!
+        print(String(num) + sub(16) + " = " + fromBasetoBase(16, 2, num) + sub(2))
+    case "5": // Base addition
+        print("Enter base: ")
+        let base = Int(readLine()!)!
+        print("Enter first number:  ")
+        let num1 = readLine()!
+        print("Enter second number: ")
+        let num2 = readLine()!
+        print("Enter third number:  ")
+        let num3 = readLine()!
+        print("Enter fourth number: ")
+        let num4 = readLine()!
+        let bases = sub(base)
+        let sum10 = String(Int(fromBasetoBase(base, 10, num1))! + Int(fromBasetoBase(base, 10, num2))! + Int(fromBasetoBase(base, 10, num3))! + Int(fromBasetoBase(base, 10, num4))!) // sum in base 10
+        let state = "\(num1 + bases) + \(num2 + bases) + \(num3 + bases) +\(num4 + bases)" // part of print statement
+        print(state + " = \(fromBasetoBase(10, base, sum10) + bases) = \(sum10 + sub(10))")
+    case "6": // Universal base changer
+        print("Enter original base: ")
+        let base = Int(readLine()!)!
+        print("Enter original number: ")
+        let num = readLine()!
+        print("Enter desired base: ")
         let basef = Int(readLine()!)!
-        print(fromBasetoBase(basei, basef, Int(readLine()!)!))
-    default:
+        print(num + sub(base) + " = " + fromBasetoBase(base, basef, num) + sub(basef))
+    default: // If selection is invalid...
         print("Please enter a valid selection . . .")
-    }
-}
-*/
+    } // end of selector
+} // end of program
+
